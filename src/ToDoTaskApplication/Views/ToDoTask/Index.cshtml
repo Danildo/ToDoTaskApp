@@ -1,0 +1,88 @@
+﻿@model IEnumerable<ToDoTaskApplication.Models.ToDoTask>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Tasks";
+}
+
+<h1>To-Do List Tasks</h1>
+
+<div class="d-flex justify-content-between mb-3">
+    <a asp-action="Create" class="btn btn-primary">New Task</a>
+    <form asp-action="ClearDoneTasks" method="post" class="d-inline">
+        <button type="submit" class="btn btn-danger">Clear Done Tasks</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Status.StatusName)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+            <th>@Html.DisplayNameFor(model => model.CompletedDate)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>
+                    <span class="@(item.Status.StatusName == "Pending" ? "status-pending" : item.Status.StatusName == "In Progress" ? "status-in-progress" : "status-done")">
+                        @Html.DisplayFor(modelItem => item.Status.StatusName)
+                    </span>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.CompletedDate)</td>
+                <td>
+                    <div class="d-flex">
+                        @if (item.Status.StatusName == "Pending")
+                        {
+                            <form asp-action="SetInProgress" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-primary">Set In Progress</button>
+                            </form>
+                        }
+                        else if (item.Status.StatusName == "In Progress")
+                        {
+                            <div class="d-flex">
+                                <form asp-action="SetPending" method="post" style="margin-right: 10px;">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-warning">Set Pending</button>
+                                </form>
+                                <form asp-action="SetDone" method="post">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-success">Done</button>
+                                </form>
+                            </div>
+                        }
+                        else if (item.Status.StatusName == "Done")
+                        {
+                            <form asp-action="SetPending" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-warning">Set Pending</button>
+                            </form>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    @if (item.Status.StatusName == "Done")
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="ml-2">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

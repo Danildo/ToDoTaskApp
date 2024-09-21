@@ -1,0 +1,14 @@
+﻿@page
+@model IndexModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to your interactive to-do list</h1>
+    <p>
+        @* <a asp-page="/ToDoTask/Index" class="btn btn-primary">Go to Tasks</a> *@
+        <a asp-controller="ToDoTask" class="btn btn-primary">Access your tasks</a>
+    </p>
+</div>
