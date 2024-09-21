@@ -1,14 +1,8 @@
-Sure! Here's an updated README section explaining the benefits of using modular architecture:
-
----
+# Todo Task Manager
 
 ## Developer's Note
 
-During the development of this project, I utilized (AI) artificial intelligence as a support tool to enhance the Documentation and test of my work. 
-
----
-
-# Todo Task Manager
+During the development of this project, I utilized (AI) artificial intelligence as a support tool to enhance the Documentation and test of my work.
 
 ## Overview
 
